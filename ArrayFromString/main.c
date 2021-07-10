@@ -26,8 +26,8 @@ void applier(const void *value, void *context) {
 }
 
 int main(int argc, const char * argv[]) {
-  CFStringRef stringToParse = CFSTR("John Pappas,Mary Foo,Peter Pan");
-  CFStringRef separatorString = CFSTR(",");
+  CFStringRef stringToParse = CFStringCreateWithCString(kCFAllocatorDefault, argv[1], CFStringGetSystemEncoding());
+  CFStringRef separatorString = CFStringCreateWithCString(kCFAllocatorDefault, argv[2], CFStringGetSystemEncoding());
   
   CFArrayRef array = CFStringCreateArrayBySeparatingStrings(kCFAllocatorDefault, stringToParse, separatorString);
   
@@ -38,6 +38,8 @@ int main(int argc, const char * argv[]) {
                        NULL);
     
   CFRelease(array);
+  CFRelease(stringToParse);
+  CFRelease(separatorString);
   
   return 0;
 }
