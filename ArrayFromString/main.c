@@ -12,22 +12,15 @@ void applier(const void *value, void *context) {
   CFStringRef s = (CFStringRef)value;
   CFRetain(s);
   
-  const char *cp = CFStringGetCStringPtr(s, CFStringGetSystemEncoding());
+  CFIndex bufferSize = sizeof(char) * (CFStringGetLength(s) + 1);
+  char *buffer = malloc(bufferSize);
+  memset(buffer, 0, bufferSize);
   
-  if (cp) {
-    printf("%s\n", cp);
-  }
-  else {
-    CFIndex bufferSize = sizeof(char) * (CFStringGetLength(s) + 1);
-    char *buffer = malloc(bufferSize);
-    memset(buffer, 0, bufferSize);
-    
-    CFStringGetCString(s, buffer, bufferSize, CFStringGetSystemEncoding());
-    
-    printf("%s\n", buffer);
-    
-    free(buffer);
-  }
+  CFStringGetCString(s, buffer, bufferSize, CFStringGetSystemEncoding());
+  
+  printf("%s\n", buffer);
+  
+  free(buffer);
   
   CFRelease(s);
 }
